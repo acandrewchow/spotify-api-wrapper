@@ -1,10 +1,12 @@
 defmodule SpotifyPlaylistGenerator do
   @moduledoc """
     Documentation for `SpotifyPlaylistGenerator`.
+
+    iex > SpotifyPlaylistGenerator.create_playlist("track_id")
   """
   # https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=token&redirect_uri=YOUR_CALLBACK_URI&scope=user-read-private%20playlist-read-private%20playlist-modify-public%20playlist-modify-private&state=YOUR_STATE
   @token_url "https://accounts.spotify.com/api/token"
-  @auth_token "BQCxfZCkhjkNEnlnWO32IUD8IURL_JBGaTIFcOleh5kVWEUApG0MrOfGqsuyln8hA9vft97NeaORL_ZL61Ud6Lim7t0tq8pTBbN8G2m_1EuJhvfWUMpp-xekRlRDtAUjuJ-qAqjT_7rcQIODJpxcRwaQ4F2anJt02u4PfBrGnoWCKTG7OPcyHX0LHs1CxpMvRdEDvgrQ6W6mvRHRaZauaH17hibzANaBYVVRA1bL4JX1mc_kMh8KSmALtsQ"
+  @auth_token ""
 
   @doc """
     Retrieves information for a track
