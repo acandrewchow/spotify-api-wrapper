@@ -7,11 +7,21 @@ SpotifyPlaylistGenerator is a simple elixir application that allows users to gen
 1. Have Elixir Installed
   - Instructions to install Elixir can be found here: https://elixir-lang.org/install.html
 
+
 ## Prerequisites
 1. Create a Spotify Account
 2. Access the Spotify Developer Dashboard to create a new project
 3. Ensure that you have a `CLIENT_ID` and `CLIENT_SECRET` for the corresponding spotify application
 4. Set your Redirect URI to `http://localhost:3000/callback`
+
+## Setup
+1. Clone the repository `git clone https://github.com/acandrewchow/spotify_playlist_generator`
+2. Create a .env file in the main directory with the following contents:
+  ``` bash
+  CLIENT_ID=YOUR_CLIENT_ID
+  CLIENT_SECRET=YOUR_CLIENT_SECRET
+  ```
+
  
 ## To Run
 
