@@ -6,9 +6,13 @@ defmodule SpotifyPlaylistGenerator do
   """
 
   @base_url "https://api.spotify.com/v1"
-  @auth_token "BQAR_S9PeSA_KtbDXYBqCmEnCkoNiEE4e210T3fTqN9kPuTD4T-hdv_nXU9NvtYxeO4qbjtn--hC8qLoJh_riubEYIPmRWT3HjKWkqmugOvcjL366K05KVJLXcvSMKUigMpbwKlnVgpsSMyAVXbc33ooPYH7ZMvpqFm4QMwRHZ-YewomNrS8MhZoIA038JPl5RmCk2GhpDItg-y0QPciEPG0PTSHK1dvujrICVIV4ctYV7TGCecLKSjXFN6LsSI18VM"
+  @auth_token ""
   @default_limit 10
   @default_seed_track "4kjI1gwQZRKNDkw1nI475M"
+
+  @auth_base_url "https://accounts.spotify.com/authorize"
+  @redirect_uri "http://localhost:3000/callback"
+  @scopes "user-read-private playlist-read-private playlist-modify-public playlist-modify-private"
 
   @spec get_env_configs() :: map()
   def get_env_configs do
@@ -17,6 +21,21 @@ defmodule SpotifyPlaylistGenerator do
       client_secret: System.fetch_env!("CLIENT_SECRET")
     }
   end
+
+    @spec generate_authorization_url() :: String.t()
+    def generate_authorization_url do
+      client_id = System.fetch_env!("CLIENT_ID")
+
+      query_params = %{
+        client_id: client_id,
+        response_type: "token",
+        redirect_uri: @redirect_uri,
+        scope: @scopes
+      }
+
+      query_string = URI.encode_query(query_params)
+      "#{@auth_base_url}?#{query_string}"
+    end
 
   @spec extract_auth_token(String.t()) :: String.t() | nil
   def extract_auth_token(url) do
