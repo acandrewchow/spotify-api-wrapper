@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Retrieval</title>
+    <script type="text/javascript">
+        window.onload = function() {
+            const fragment = window.location.hash.substring(1);
+            const params = new URLSearchParams(fragment);
+            const accessToken = params.get("access_token");
+
+            if (accessToken) {
+                console.log("Access token: " + accessToken);
+
+                // Create an HTML element to display the token
+                const tokenDisplay = document.createElement("div");
+                tokenDisplay.textContent = "Retrieved token: " + accessToken;
+                tokenDisplay.style.marginTop = "20px";
+                tokenDisplay.style.fontSize = "20px";
+                document.body.appendChild(tokenDisplay);
+
+                fetch("/store-token", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ token: accessToken })
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Token Retrieval</h1>
+    <p>The access token will be displayed below:</p>
+</body>
+</html>

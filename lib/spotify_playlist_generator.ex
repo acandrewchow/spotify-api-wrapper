@@ -14,6 +14,44 @@ defmodule SpotifyPlaylistGenerator do
   @redirect_uri "http://localhost:3000/callback"
   @scopes "user-read-private playlist-read-private playlist-modify-public playlist-modify-private"
 
+  @spec open_url(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def open_url(url) do
+    case :os.type() do
+      # macOS
+      {:unix, :darwin} ->
+        System.cmd("open", [url])
+
+      # Linux
+      {:unix, _} ->
+        System.cmd("xdg-open", [url])
+
+      # Windows
+      {:win32, _} ->
+        System.cmd("cmd", ["/c", "start", url])
+
+      _ ->
+        {:error, "Unsupported OS"}
+    end
+  end
+
+  def generate_authorization_url do
+    SpotifyAuthServer.start_link([])
+
+    client_id = System.fetch_env!("CLIENT_ID")
+
+    query_params = %{
+      client_id: client_id,
+      response_type: "token",
+      redirect_uri: @redirect_uri,
+      scope: @scopes
+    }
+
+    query_string = URI.encode_query(query_params)
+    auth_url = "#{@auth_base_url}?#{query_string}"
+
+    System.cmd("open", [auth_url])
+  end
+
   @spec get_env_configs() :: map()
   def get_env_configs do
     %{
@@ -21,21 +59,6 @@ defmodule SpotifyPlaylistGenerator do
       client_secret: System.fetch_env!("CLIENT_SECRET")
     }
   end
-
-    @spec generate_authorization_url() :: String.t()
-    def generate_authorization_url do
-      client_id = System.fetch_env!("CLIENT_ID")
-
-      query_params = %{
-        client_id: client_id,
-        response_type: "token",
-        redirect_uri: @redirect_uri,
-        scope: @scopes
-      }
-
-      query_string = URI.encode_query(query_params)
-      "#{@auth_base_url}?#{query_string}"
-    end
 
   @spec extract_auth_token(String.t()) :: String.t() | nil
   def extract_auth_token(url) do

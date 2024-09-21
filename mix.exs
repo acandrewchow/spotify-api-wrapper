@@ -24,6 +24,7 @@ defmodule SpotifyPlaylistGenerator.MixProject do
       {:httpoison, "~> 1.8"},
       {:jason, "~> 1.2"},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
+      {:plug_cowboy, "~> 2.5"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
