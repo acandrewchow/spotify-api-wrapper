@@ -1,4 +1,4 @@
-defmodule SpotifyPlaylistGenerator.MixProject do
+defmodule SpotifyApiWrapper.MixProject do
   use Mix.Project
 
   def project do
