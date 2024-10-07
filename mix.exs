@@ -21,6 +21,7 @@ defmodule SpotifyPlaylistGenerator.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dotenv_parser, "~> 2.0"},
       {:httpoison, "~> 1.8"},
       {:jason, "~> 1.2"},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},

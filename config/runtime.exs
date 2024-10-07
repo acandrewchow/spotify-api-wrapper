@@ -10,4 +10,5 @@ end
 
 config :spotify_playlist_generator,
   client_id: System.fetch_env!("CLIENT_ID"),
-  client_secret: System.fetch_env!("CLIENT_SECRET")
+  client_secret: System.fetch_env!("CLIENT_SECRET"),
+  spotify_auth_token: System.fetch_env!("SPOTIFY_AUTH_TOKEN")

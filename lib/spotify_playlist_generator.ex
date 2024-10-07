@@ -5,23 +5,11 @@ defmodule SpotifyPlaylistGenerator do
   iex > SpotifyPlaylistGenerator.create_playlist("track_id")
   """
 
+  alias Helpers.SpotifyHelpers
+
   @base_url "https://api.spotify.com/v1"
-  @auth_token ""
-  @default_limit 10
+  @default_limit 100
   @default_seed_track "4kjI1gwQZRKNDkw1nI475M"
-
-  @spec get_track_info(String.t()) :: {:ok, map()} | {:error, String.t()}
-  def get_track_info(track_id) do
-    make_request("tracks/#{track_id}")
-  end
-
-  @doc """
-  Retrieves information for an album
-  """
-  @spec get_album_info(String.t()) :: {:ok, map()} | {:error, String.t()}
-  def get_album_info(album_id) do
-    make_request("albums/#{album_id}")
-  end
 
   @doc """
   Generates a playlist of X songs related to X track
@@ -35,6 +23,9 @@ defmodule SpotifyPlaylistGenerator do
          {:ok, playlist_data} <- create_playlist(playlist_name),
          {:ok, _added_tracks} <- add_tracks_to_playlist(playlist_data["id"], recommended_tracks) do
       {:ok, "Playlist created and tracks added successfully"}
+    else
+      {:error, reason} ->
+        {:error, "Failed to create playlist: #{reason}"}
     end
   end
 
@@ -49,7 +40,7 @@ defmodule SpotifyPlaylistGenerator do
   defp fetch_recommendations(query_params) do
     url = "#{@base_url}/recommendations?#{query_params}"
 
-    case HTTPoison.get(url, authorization_headers()) do
+    case HTTPoison.get(url, SpotifyHelpers.authorization_headers()) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, Jason.decode!(body)["tracks"]}
 
@@ -70,7 +61,7 @@ defmodule SpotifyPlaylistGenerator do
       public: true
     }
 
-    case HTTPoison.post(url, Jason.encode!(body_params), authorization_headers()) do
+    case HTTPoison.post(url, Jason.encode!(body_params), SpotifyHelpers.authorization_headers()) do
       {:ok, %HTTPoison.Response{status_code: 201, body: body}} ->
         {:ok, Jason.decode!(body)}
 
@@ -87,31 +78,9 @@ defmodule SpotifyPlaylistGenerator do
     track_uris = Enum.map(tracks, &("spotify:track:" <> &1["id"]))
     body_params = %{uris: track_uris}
 
-    case HTTPoison.post(url, Jason.encode!(body_params), authorization_headers()) do
+    case HTTPoison.post(url, Jason.encode!(body_params), SpotifyHelpers.authorization_headers()) do
       {:ok, %HTTPoison.Response{status_code: 201}} ->
         {:ok, "Tracks added to playlist successfully"}
-
-      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        {:error, "Unexpected status code: #{status_code}, body: #{body}"}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
-
-  defp authorization_headers do
-    [
-      {"Authorization", "Bearer #{@auth_token}"},
-      {"Content-Type", "application/json"}
-    ]
-  end
-
-  defp make_request(endpoint) do
-    url = "#{@base_url}/#{endpoint}"
-
-    case HTTPoison.get(url, authorization_headers()) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, Jason.decode!(body)}
 
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         {:error, "Unexpected status code: #{status_code}, body: #{body}"}

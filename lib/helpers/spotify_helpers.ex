@@ -6,7 +6,7 @@ defmodule Helpers.SpotifyHelpers do
 
   @auth_base_url "https://accounts.spotify.com/authorize"
   @redirect_uri "http://localhost:3000/callback"
-  @scopes "user-read-private playlist-read-private playlist-modify-public playlist-modify-private"
+  @scopes "user-read-private user-top-read playlist-read-private playlist-modify-public playlist-modify-private"
 
   def generate_authorization_url do
     SpotifyAuthServer.start_link([])
@@ -24,6 +24,13 @@ defmodule Helpers.SpotifyHelpers do
     auth_url = "#{@auth_base_url}?#{query_string}"
 
     System.cmd("open", [auth_url])
+  end
+
+  def authorization_headers do
+    [
+      {"Authorization", "Bearer #{System.get_env("SPOTIFY_AUTH_TOKEN")}"},
+      {"Content-Type", "application/json"}
+    ]
   end
 
   @spec get_env_configs() :: map()
