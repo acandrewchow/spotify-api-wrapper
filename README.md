@@ -1,7 +1,6 @@
-# SpotifyPlaylistGenerator
+# SpotifyAPIWrapper
 
-SpotifyPlaylistGenerator is a simple elixir application that allows users to generate playlists based on a given track. 
-
+SpotifyAPIWrapper is an Elixir application that interacts with the Spotify Web API, allowing users to manage and generate personalized playlists, fetch user-specific data and many more. This application simplifies authentication, playlist creation, and track management using Spotify’s API by providing a convenient wrapper for developers to easily integrate Spotify’s functionality into their own projects.
 
 ## Requirements
 1. Have Elixir Installed
@@ -12,44 +11,40 @@ SpotifyPlaylistGenerator is a simple elixir application that allows users to gen
 ## Prerequisites
 1. Create a Spotify Account
 2. Access the Spotify Developer Dashboard to create a new project
-3. Ensure that you have a `CLIENT_ID` and `CLIENT_SECRET` for the corresponding spotify application
+3. Ensure that you have a `CLIENT_ID` and `CLIENT_SECRET` for your spotify application
 4. Set your Redirect URI to `http://localhost:3000/callback`
 
 ## Setup
-1. Clone the repository `git clone https://github.com/acandrewchow/spotify_playlist_generator`
+1. Clone the repository `git clone https://github.com/acandrewchow/spotify_api_wrapper`
 2. Create a .env file in the main directory with the following contents:
   ``` bash
   CLIENT_ID=YOUR_CLIENT_ID
   CLIENT_SECRET=YOUR_CLIENT_SECRET
+  SPOTIFY_AUTH_TOKEN=AUTO_POPULATED
   ```
 
- 
-## To Run
+## To Create a Playlist
 
 1. Open the interactive elixir `iex` terminal with `iex -S mix`
-2. Create an URL for authorization - each auth token lasts 6 hours once generated
-    - Example link: https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=token&redirect_uri=YOUR_CALLBACK_URI&scope=user-read-private%20playlist-read-private%20playlist-modify-public%20playlist-modify-private&state=YOUR_STATE
-    - You will need to replace replace `YOUR_CLIENT_ID` and `YOUR_CALLBACK_URI` with your values 
-3. Generate an authentication token that we'll need in order to perform actions within the API
-4. Extract the auth token: `auth_token = SpotifyPlaylistGenerator.extract_auth_token(url)`
-6. Copy the auth token and update the `@auth_token` module attribute on line 9
-7. Recompile the file using `recompile`
-8. `SpotifyPlaylistGenerator.generate_playlist("Playlist name")`
+2. Generate an authentication token that we'll need in order to perform requests within the API
+    - `Helpers.SpotifyHelpers.generate_authorization_url`
+  Next, generate a playlist!
+3. `SpotifyPlaylistGenerator.generate_playlist("Playlist name")`
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `spotify_playlist_generator` to your list of dependencies in `mix.exs`:
+by adding `spotify_api_wrapper` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:spotify_playlist_generator, "~> 0.1.0"}
+    {:spotify_api_wrapper, "~> 0.1.0"}
   ]
 end
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/spotify_playlist_generator>.
+be found at <https://hexdocs.pm/spotify_api_wrapper>.
 

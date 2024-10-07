@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-spotify_playlist_generator-*.tar
+spotify_api_wrapper-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
