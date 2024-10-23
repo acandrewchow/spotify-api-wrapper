@@ -23,6 +23,9 @@ defmodule Helpers.SpotifyHelpers do
     query_string = URI.encode_query(query_params)
     auth_url = "#{@auth_base_url}?#{query_string}"
 
+    # Outputs the auth url to terminal incase OS does not open url
+    IO.puts(auth_url)
+
     System.cmd("open", [auth_url])
   end
 
